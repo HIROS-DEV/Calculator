@@ -27,6 +27,7 @@ function multiply(num1, num2) {
 }
 
 function divide(num1, num2) {
+	if (num1 === 0 || num2 === 0) return 0;
 	return +num1 / +num2;
 }
 
@@ -80,7 +81,7 @@ operateKeys.forEach((operateKey) =>
 		// store second number for calculation
 		secondNumberForCalculation = +currentDisplay;
 
-		// do calculate
+		// do calculation
 		operate(
 			chosenOperator,
 			firstNumberForCalculation,
@@ -99,7 +100,7 @@ equalKey.addEventListener('click', (e) => {
 	// store second number for calculation
 	secondNumberForCalculation = +currentDisplay;
 
-	// do calculate
+	// do calculation
 	operate(
 		chosenOperator,
 		firstNumberForCalculation,
