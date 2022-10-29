@@ -188,3 +188,8 @@ button {
 	grid-column-start: 1;
 	grid-column-end: 3;
 }
+
+.pushed-operate {
+	background-color: #FFC083;
+	transition: all 0.1s ease;
+}

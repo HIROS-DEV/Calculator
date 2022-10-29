@@ -1,5 +1,6 @@
 const numberKeys = document.querySelectorAll('.number');
 const operateKeys = document.querySelectorAll('.operate');
+// const operateKeysPushedAlready = document.querySelectorAll('.pushed-operate');
 
 const display = document.querySelector('.calculator-screen');
 
@@ -54,22 +55,26 @@ function operate(operator, num1, num2) {
 	}
 }
 
-numberKeys.forEach((numberKey) =>
-	numberKey.addEventListener('click', (e) => {
-		if (currentDisplay === 0 && e.target.value === '0') return;
-		if (currentDisplay === 0) {
-			currentDisplay = e.target.value;
-			display.value = currentDisplay;
-			return;
-		}
-
-		currentDisplay += e.target.value;
+function pushNumber(e) {
+	if (currentDisplay === 0 && e.target.value === '0') return;
+	if (currentDisplay === 0) {
+		currentDisplay = e.target.value;
 		display.value = currentDisplay;
-	})
+		return;
+	}
+
+	currentDisplay += e.target.value;
+	display.value = currentDisplay;
+}
+
+numberKeys.forEach((numberKey) =>
+	numberKey.addEventListener('click', (e) => pushNumber(e))
 );
 
 operateKeys.forEach((operateKey) =>
 	operateKey.addEventListener('click', (e) => {
+		console.log(e.target);
+
 		if (clickedOperateKeyAtFirstTime) {
 			chosenOperator = e.target.value;
 			firstNumberForCalculation = +currentDisplay;
@@ -111,3 +116,7 @@ equalKey.addEventListener('click', (e) => {
 	currentDisplay = 0;
 	chosenOperator = e.target.value;
 });
+
+// clearKey.addEventListener('click', (e) => {
+
+// });
