@@ -1,3 +1,10 @@
+const numberKeys = document.querySelectorAll('.number');
+const operateKeys = document.querySelectorAll('.operate');
+const clearKey = document.querySelector('.clear');
+const convertKey = document.querySelector('.convert');
+const percentKey = document.querySelector('.percent');
+const equalKey = document.querySelector('.equal');
+
 function add(num1, num2) {
 	return +num1 + +num2;
 }
