@@ -55,7 +55,7 @@ function operate(operator, num1, num2) {
 	}
 }
 
-function pushNumber(e) {
+function pushNumberKey(e) {
 	if (currentDisplay === 0 && e.target.value === '0') return;
 	if (currentDisplay === 0) {
 		currentDisplay = e.target.value;
@@ -67,39 +67,31 @@ function pushNumber(e) {
 	display.value = currentDisplay;
 }
 
-numberKeys.forEach((numberKey) =>
-	numberKey.addEventListener('click', (e) => pushNumber(e))
-);
-
-operateKeys.forEach((operateKey) =>
-	operateKey.addEventListener('click', (e) => {
-		console.log(e.target);
-
-		if (clickedOperateKeyAtFirstTime) {
-			chosenOperator = e.target.value;
-			firstNumberForCalculation = +currentDisplay;
-			currentDisplay = 0;
-			clickedOperateKeyAtFirstTime = false;
-			return;
-		}
-
-		// store second number for calculation
-		secondNumberForCalculation = +currentDisplay;
-
-		// do calculation
-		operate(
-			chosenOperator,
-			firstNumberForCalculation,
-			secondNumberForCalculation
-		);
-
-		// after calculation, display resets and operator chose again
-		currentDisplay = 0;
+function pushOperateKey(e) {
+	if (clickedOperateKeyAtFirstTime) {
 		chosenOperator = e.target.value;
-	})
-);
+		firstNumberForCalculation = +currentDisplay;
+		currentDisplay = 0;
+		clickedOperateKeyAtFirstTime = false;
+		return;
+	}
 
-equalKey.addEventListener('click', (e) => {
+	// store second number for calculation
+	secondNumberForCalculation = +currentDisplay;
+
+	// do calculation
+	operate(
+		chosenOperator,
+		firstNumberForCalculation,
+		secondNumberForCalculation
+	);
+
+	// after calculation, display resets and operator chose again
+	currentDisplay = 0;
+	chosenOperator = e.target.value;
+}
+
+function pushEqualKey(e) {
 	if (clickedOperateKeyAtFirstTime) return;
 
 	// store second number for calculation
@@ -115,7 +107,15 @@ equalKey.addEventListener('click', (e) => {
 	// after calculation, display resets and operator chose again
 	currentDisplay = 0;
 	chosenOperator = e.target.value;
-});
+}
+
+numberKeys.forEach((numberKey) =>
+	numberKey.addEventListener('click', (e) => pushNumberKey(e))
+);
+operateKeys.forEach((operateKey) =>
+	operateKey.addEventListener('click', (e) => pushOperateKey(e))
+);
+equalKey.addEventListener('click', (e) => pushEqualKey(e));
 
 // clearKey.addEventListener('click', (e) => {
 
