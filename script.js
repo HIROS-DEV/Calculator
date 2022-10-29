@@ -77,15 +77,36 @@ operateKeys.forEach((operateKey) =>
 			return;
 		}
 
+		// store second number for calculation
 		secondNumberForCalculation = +currentDisplay;
 
+		// do calculate
 		operate(
 			chosenOperator,
 			firstNumberForCalculation,
 			secondNumberForCalculation
 		);
 
+		// after calculation, display resets and operator chose again
 		currentDisplay = 0;
 		chosenOperator = e.target.value;
 	})
 );
+
+equalKey.addEventListener('click', (e) => {
+	if (clickedOperateKeyAtFirstTime) return;
+
+	// store second number for calculation
+	secondNumberForCalculation = +currentDisplay;
+
+	// do calculate
+	operate(
+		chosenOperator,
+		firstNumberForCalculation,
+		secondNumberForCalculation
+	);
+
+	// after calculation, display resets and operator chose again
+	currentDisplay = 0;
+	chosenOperator = e.target.value;
+});
