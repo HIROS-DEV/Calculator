@@ -33,22 +33,21 @@ function divide(num1, num2) {
 }
 
 function operate(operator, num1, num2) {
-	console.log(operator, num1, num2);
 	switch (operator) {
 		case '+':
-			firstNumberForCalculation = add(num1, num2);
+			firstNumberForCalculation = add(num1, num2).toFixed(2);
 			display.value = firstNumberForCalculation;
 			return;
 		case '-':
-			firstNumberForCalculation = subtract(num1, num2);
+			firstNumberForCalculation = subtract(num1, num2).toFixed(2);
 			display.value = firstNumberForCalculation;
 			return;
 		case '*':
-			firstNumberForCalculation = multiply(num1, num2);
+			firstNumberForCalculation = multiply(num1, num2).toFixed(2);
 			display.value = firstNumberForCalculation;
 			return;
 		case '/':
-			firstNumberForCalculation = divide(num1, num2);
+			firstNumberForCalculation = divide(num1, num2).toFixed(2);
 			display.value = firstNumberForCalculation;
 			return;
 		default:
@@ -58,6 +57,9 @@ function operate(operator, num1, num2) {
 
 function pushNumberKey(e) {
 	if (currentDisplay === 0 && e.target.value === '0') return;
+	if (currentDisplay === 0 && e.target.value === '.')
+		currentDisplay += e.target.value;
+	if (currentDisplay.toString().includes('.') && e.target.value === '.') return;
 	if (currentDisplay === 0) {
 		currentDisplay = e.target.value;
 		display.value = currentDisplay;
