@@ -109,14 +109,21 @@ function pushEqualKey(e) {
 	chosenOperator = e.target.value;
 }
 
+function allReset() {
+	chosenOperator = '';
+	firstNumberForCalculation = 0;
+	secondNumberForCalculation = 0;
+	clickedOperateKeyAtFirstTime = true;
+	currentDisplay = 0;
+	display.value = currentDisplay;
+}
+
 numberKeys.forEach((numberKey) =>
-	numberKey.addEventListener('click', (e) => pushNumberKey(e))
+	numberKey.addEventListener('click', pushNumberKey)
 );
 operateKeys.forEach((operateKey) =>
-	operateKey.addEventListener('click', (e) => pushOperateKey(e))
+	operateKey.addEventListener('click', pushOperateKey)
 );
-equalKey.addEventListener('click', (e) => pushEqualKey(e));
 
-// clearKey.addEventListener('click', (e) => {
-
-// });
+equalKey.addEventListener('click', pushEqualKey);
+clearKey.addEventListener('click', allReset);
