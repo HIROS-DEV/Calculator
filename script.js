@@ -33,6 +33,7 @@ function divide(num1, num2) {
 }
 
 function operate(operator, num1, num2) {
+	console.log(operator, num1, num2);
 	switch (operator) {
 		case '+':
 			firstNumberForCalculation = add(num1, num2);
@@ -109,6 +110,23 @@ function pushEqualKey(e) {
 	chosenOperator = e.target.value;
 }
 
+function pushConvertKey() {
+	if (currentDisplay === 0) return;
+
+	// convert from minus to plus
+	if (currentDisplay.toString().includes('-')) {
+		currentDisplay = currentDisplay.toString().replace('-', '');
+		display.value = currentDisplay;
+		return;
+	}
+
+	// convert from plus to minus
+	if (+currentDisplay > 0) {
+		currentDisplay = `-${currentDisplay}`;
+		display.value = currentDisplay;
+	}
+}
+
 function allReset() {
 	chosenOperator = '';
 	firstNumberForCalculation = 0;
@@ -124,6 +142,6 @@ numberKeys.forEach((numberKey) =>
 operateKeys.forEach((operateKey) =>
 	operateKey.addEventListener('click', pushOperateKey)
 );
-
+convertKey.addEventListener('click', pushConvertKey);
 equalKey.addEventListener('click', pushEqualKey);
 clearKey.addEventListener('click', allReset);
