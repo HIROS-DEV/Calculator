@@ -1,5 +1,3 @@
-// TODO: 1. show operate key in display
-// TODO: 2. add "%"" key function
 // TODO: 3. When you click, button color is changed
 // TODO: 4. I have to set max number. Because numbers are poked out in display. (I think I have to change CSS)
 
@@ -12,7 +10,6 @@ const container = document.querySelector('.calculator');
 const display = document.querySelector('.calculator-screen');
 const clearKey = document.querySelector('.clear');
 const convertKey = document.querySelector('.convert');
-const percentKey = document.querySelector('.percent');
 const equalKey = document.querySelector('.equal');
 
 const operator = document.createElement('p');
@@ -80,7 +77,7 @@ function pushNumberKey(e) {
 }
 
 function showOperatorIcon(chosenOperator) {
-	operator.classList.add('calculator-operator');
+	if (chosenOperator === '%') return;
 
 	if (chosenOperator === '/') {
 		operator.textContent = '÷';
@@ -90,6 +87,7 @@ function showOperatorIcon(chosenOperator) {
 		operator.textContent = chosenOperator;
 	}
 
+	operator.classList.add('calculator-operator');
 	container.insertBefore(operator, container.firstChild);
 }
 
@@ -111,9 +109,27 @@ function deleteEqualIcon() {
 	}
 }
 
+function pushPercentKey(e) {
+	if (
+		e.target.value === '%' &&
+		(chosenOperator === '+' || chosenOperator === '-')
+	) {
+		secondNumberForCalculation =
+			(+currentDisplay / 100) * firstNumberForCalculation;
+	} else if (
+		e.target.value === '%' &&
+		(chosenOperator === '*' || chosenOperator === '/')
+	) {
+		secondNumberForCalculation = +currentDisplay / 100;
+	} else {
+		secondNumberForCalculation = +currentDisplay;
+	}
+}
+
 function pushOperateKey(e) {
 	if (clickedOperateKeyAtFirstTime && currentDisplay === 0) return;
 	if (clickedOperateKeyAtFirstTime) {
+		if (e.target.value === '%') return;
 		chosenOperator = e.target.value;
 		firstNumberForCalculation = +currentDisplay;
 		currentDisplay = 0;
@@ -122,10 +138,9 @@ function pushOperateKey(e) {
 		return;
 	}
 
-	secondNumberForCalculation = +currentDisplay;
-
+	pushPercentKey(e);
 	deleteEqualIcon();
-	
+
 	// do calculation
 	operate(
 		chosenOperator,
