@@ -16,6 +16,7 @@ const percentKey = document.querySelector('.percent');
 const equalKey = document.querySelector('.equal');
 
 const operator = document.createElement('p');
+const equalOperator = document.createElement('p');
 
 let currentDisplay = 0;
 let firstNumberForCalculation = 0;
@@ -92,9 +93,21 @@ function showOperatorIcon(chosenOperator) {
 	container.insertBefore(operator, container.firstChild);
 }
 
+function showEqualOperator(equalSign) {
+	equalOperator.classList.add('calculator-operator-equal');
+	equalOperator.textContent = equalSign;
+	container.appendChild(equalOperator);
+}
+
 function deleteOperatorIcon() {
 	if (document.body.contains(operator)) {
 		container.removeChild(operator);
+	}
+}
+
+function deleteEqualIcon() {
+	if (document.body.contains(equalOperator)) {
+		container.removeChild(equalOperator);
 	}
 }
 
@@ -111,6 +124,8 @@ function pushOperateKey(e) {
 
 	secondNumberForCalculation = +currentDisplay;
 
+	deleteEqualIcon();
+	
 	// do calculation
 	operate(
 		chosenOperator,
@@ -130,6 +145,8 @@ function pushEqualKey(e) {
 	if (clickedOperateKeyAtFirstTime) return;
 
 	secondNumberForCalculation = +currentDisplay;
+	deleteOperatorIcon();
+	showEqualOperator('=');
 
 	// do calculation
 	operate(
@@ -165,6 +182,7 @@ function resetAll() {
 	chosenOperator = '';
 	clickedOperateKeyAtFirstTime = true;
 	deleteOperatorIcon();
+	deleteEqualIcon();
 
 	// values resets
 	firstNumberForCalculation = 0;
