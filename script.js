@@ -1,13 +1,21 @@
+// TODO: 1. show operate key in display
+// TODO: 2. add "%"" key function
+// TODO: 3. When you click, button color is changed
+// TODO: 4. I have to set max number. Because numbers are poked out in display. (I think I have to change CSS)
+
+// FIXME: If you want to calculate with decimal number, error happens!! fix!!
+
 const numberKeys = document.querySelectorAll('.number');
 const operateKeys = document.querySelectorAll('.operate');
-// const operateKeysPushedAlready = document.querySelectorAll('.pushed-operate');
 
+const container = document.querySelector('.calculator');
 const display = document.querySelector('.calculator-screen');
-
 const clearKey = document.querySelector('.clear');
 const convertKey = document.querySelector('.convert');
 const percentKey = document.querySelector('.percent');
 const equalKey = document.querySelector('.equal');
+
+const operator = document.createElement('p');
 
 let currentDisplay = 0;
 let firstNumberForCalculation = 0;
@@ -35,19 +43,19 @@ function divide(num1, num2) {
 function operate(operator, num1, num2) {
 	switch (operator) {
 		case '+':
-			firstNumberForCalculation = add(num1, num2).toFixed(2);
+			firstNumberForCalculation = add(num1, num2);
 			display.value = firstNumberForCalculation;
 			return;
 		case '-':
-			firstNumberForCalculation = subtract(num1, num2).toFixed(2);
+			firstNumberForCalculation = subtract(num1, num2);
 			display.value = firstNumberForCalculation;
 			return;
 		case '*':
-			firstNumberForCalculation = multiply(num1, num2).toFixed(2);
+			firstNumberForCalculation = multiply(num1, num2);
 			display.value = firstNumberForCalculation;
 			return;
 		case '/':
-			firstNumberForCalculation = divide(num1, num2).toFixed(2);
+			firstNumberForCalculation = divide(num1, num2);
 			display.value = firstNumberForCalculation;
 			return;
 		default:
@@ -70,16 +78,37 @@ function pushNumberKey(e) {
 	display.value = currentDisplay;
 }
 
+function showOperatorIcon(chosenOperator) {
+	operator.classList.add('calculator-operator');
+
+	if (chosenOperator === '/') {
+		operator.textContent = '÷';
+	} else if (chosenOperator === '*') {
+		operator.textContent = 'x';
+	} else {
+		operator.textContent = chosenOperator;
+	}
+
+	container.insertBefore(operator, container.firstChild);
+}
+
+function deleteOperatorIcon() {
+	if (document.body.contains(operator)) {
+		container.removeChild(operator);
+	}
+}
+
 function pushOperateKey(e) {
+	if (clickedOperateKeyAtFirstTime && currentDisplay === 0) return;
 	if (clickedOperateKeyAtFirstTime) {
 		chosenOperator = e.target.value;
 		firstNumberForCalculation = +currentDisplay;
 		currentDisplay = 0;
 		clickedOperateKeyAtFirstTime = false;
+		showOperatorIcon(chosenOperator);
 		return;
 	}
 
-	// store second number for calculation
 	secondNumberForCalculation = +currentDisplay;
 
 	// do calculation
@@ -89,15 +118,17 @@ function pushOperateKey(e) {
 		secondNumberForCalculation
 	);
 
-	// after calculation, display resets and operator chose again
+	deleteOperatorIcon();
+
+	// after calculation, display resets. And operator chose again
 	currentDisplay = 0;
 	chosenOperator = e.target.value;
+	showOperatorIcon(chosenOperator);
 }
 
 function pushEqualKey(e) {
 	if (clickedOperateKeyAtFirstTime) return;
 
-	// store second number for calculation
 	secondNumberForCalculation = +currentDisplay;
 
 	// do calculation
@@ -129,11 +160,17 @@ function pushConvertKey() {
 	}
 }
 
-function allReset() {
+function resetAll() {
+	// operator resets
 	chosenOperator = '';
+	clickedOperateKeyAtFirstTime = true;
+	deleteOperatorIcon();
+
+	// values resets
 	firstNumberForCalculation = 0;
 	secondNumberForCalculation = 0;
-	clickedOperateKeyAtFirstTime = true;
+
+	// display resets
 	currentDisplay = 0;
 	display.value = currentDisplay;
 }
@@ -146,4 +183,4 @@ operateKeys.forEach((operateKey) =>
 );
 convertKey.addEventListener('click', pushConvertKey);
 equalKey.addEventListener('click', pushEqualKey);
-clearKey.addEventListener('click', allReset);
+clearKey.addEventListener('click', resetAll);

@@ -167,6 +167,19 @@ table {
 	background-color: #000000;
 }
 
+.calculator-operator {
+	font-size: 1.2rem;
+	position: absolute;
+	right: 19%;
+}
+
+.calculator-operator-equal {
+	position: absolute;
+	top: 15%;
+	left: 3%;
+	font-size: 1.5rem;
+}
+
 button {
 	height: 60px;
 	border-radius: 5px;
@@ -190,6 +203,6 @@ button {
 }
 
 .pushed-operate {
-	background-color: #FFC083;
+	background-color: #ffc083;
 	transition: all 0.1s ease;
 }
