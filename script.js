@@ -266,7 +266,7 @@ function pushEqualKey(e) {
 }
 
 function pushConvertKey(e) {
-	if (e.type === 'keydown' && e.key !== 'Shift') return;
+	if (e.type === 'keydown' && e.key !== 'Tab') return;
 	if (currentDisplay === 0) return;
 
 	// convert from minus to plus
@@ -283,7 +283,8 @@ function pushConvertKey(e) {
 	}
 }
 
-function resetAll() {
+function resetAll(e) {
+	if (e.type === 'keydown' && e.key !== 'Backspace') return;
 	// operator resets
 	chosenOperator = '';
 	clickedOperateKeyAtFirstTime = true;
@@ -342,3 +343,4 @@ document.addEventListener('keydown', pushNumberKey);
 document.addEventListener('keydown', pushOperateKey);
 document.addEventListener('keydown', pushEqualKey);
 document.addEventListener('keydown', pushConvertKey);
+document.addEventListener('keydown', resetAll);
