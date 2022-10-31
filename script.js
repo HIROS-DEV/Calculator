@@ -1,5 +1,6 @@
 // TODO: 4. I have to set max number. Because numbers are poked out in display. (I think I have to change CSS)
 // FIXME: If you want to calculate with decimal number, error happens!! fix!!
+// FIXME: After clicked equal sign and user want to calculate new value, error happens!! fix!!
 
 const numberKeys = document.querySelectorAll('.number');
 const operateKeys = document.querySelectorAll('.operate');
@@ -62,7 +63,7 @@ function operate(operator, num1, num2) {
 
 function pushNumberKey(e) {
 	if (e.type === 'click') {
-		// if user click number's key, do something...
+		// When user click number's key...
 		if (currentDisplay === 0 && e.target.value === '0') return;
 		if (currentDisplay === 0 && e.target.value === '.')
 			currentDisplay += e.target.value;
@@ -77,8 +78,8 @@ function pushNumberKey(e) {
 		currentDisplay += e.target.value;
 		display.value = currentDisplay;
 	} else {
+		// When user push number's key...
 		if (
-			e.key !== '0' &&
 			e.key !== '1' &&
 			e.key !== '2' &&
 			e.key !== '3' &&
@@ -88,6 +89,7 @@ function pushNumberKey(e) {
 			e.key !== '7' &&
 			e.key !== '8' &&
 			e.key !== '9' &&
+			e.key !== '0' &&
 			e.key !== '.'
 		)
 			return;
@@ -107,13 +109,14 @@ function pushNumberKey(e) {
 
 function showOperatorIcon(chosenOperator) {
 	if (chosenOperator === '%') return;
-
 	if (chosenOperator === '/') {
 		operator.textContent = '÷';
 	} else if (chosenOperator === '*') {
 		operator.textContent = 'x';
-	} else {
-		operator.textContent = chosenOperator;
+	} else if (chosenOperator === '-') {
+		operator.textContent = '-';
+	} else if (chosenOperator === '+') {
+		operator.textContent = '+';
 	}
 
 	operator.classList.add('calculator-operator');
@@ -156,52 +159,110 @@ function pushPercentKey(e) {
 }
 
 function pushOperateKey(e) {
-	if (clickedOperateKeyAtFirstTime && currentDisplay === 0) return;
-	if (clickedOperateKeyAtFirstTime) {
-		if (e.target.value === '%') return;
-		chosenOperator = e.target.value;
-		firstNumberForCalculation = +currentDisplay;
+	if (e.type === 'click') {
+		if (clickedOperateKeyAtFirstTime && currentDisplay === 0) return;
+		if (clickedOperateKeyAtFirstTime) {
+			if (e.target.value === '%') return;
+			chosenOperator = e.target.value;
+			firstNumberForCalculation = +currentDisplay;
+			currentDisplay = 0;
+			clickedOperateKeyAtFirstTime = false;
+			showOperatorIcon(chosenOperator);
+			return;
+		}
+
+		pushPercentKey(e);
+		deleteEqualIcon();
+
+		// do calculation
+		operate(
+			chosenOperator,
+			firstNumberForCalculation,
+			secondNumberForCalculation
+		);
+
+		deleteOperatorIcon();
+
+		// after calculation, display resets. And operator chose again
 		currentDisplay = 0;
-		clickedOperateKeyAtFirstTime = false;
+		chosenOperator = e.target.value;
 		showOperatorIcon(chosenOperator);
-		return;
+	} else {
+		if (
+			e.key !== '%' &&
+			e.key !== '*' &&
+			e.key !== '/' &&
+			e.key !== '+' &&
+			e.key !== '-'
+		)
+			return;
+		if (clickedOperateKeyAtFirstTime && currentDisplay === 0) return;
+		if (clickedOperateKeyAtFirstTime) {
+			if (e.key === '%') return;
+			chosenOperator = e.key;
+			firstNumberForCalculation = +currentDisplay;
+			currentDisplay = 0;
+			clickedOperateKeyAtFirstTime = false;
+			showOperatorIcon(chosenOperator);
+			return;
+		}
+
+		pushPercentKey(e);
+		deleteEqualIcon();
+
+		// do calculation
+		operate(
+			chosenOperator,
+			firstNumberForCalculation,
+			secondNumberForCalculation
+		);
+
+		deleteOperatorIcon();
+
+		// after calculation, display resets. And operator chose again
+		currentDisplay = 0;
+		chosenOperator = e.key;
+		showOperatorIcon(chosenOperator);
 	}
-
-	pushPercentKey(e);
-	deleteEqualIcon();
-
-	// do calculation
-	operate(
-		chosenOperator,
-		firstNumberForCalculation,
-		secondNumberForCalculation
-	);
-
-	deleteOperatorIcon();
-
-	// after calculation, display resets. And operator chose again
-	currentDisplay = 0;
-	chosenOperator = e.target.value;
-	showOperatorIcon(chosenOperator);
 }
 
 function pushEqualKey(e) {
-	if (clickedOperateKeyAtFirstTime) return;
+	if (e.type === 'click') {
+		if (clickedOperateKeyAtFirstTime) return;
 
-	secondNumberForCalculation = +currentDisplay;
-	deleteOperatorIcon();
-	showEqualOperator('=');
+		secondNumberForCalculation = +currentDisplay;
+		deleteOperatorIcon();
+		showEqualOperator('=');
 
-	// do calculation
-	operate(
-		chosenOperator,
-		firstNumberForCalculation,
-		secondNumberForCalculation
-	);
+		// do calculation
+		operate(
+			chosenOperator,
+			firstNumberForCalculation,
+			secondNumberForCalculation
+		);
 
-	// after calculation, display resets and operator chose again
-	currentDisplay = 0;
-	chosenOperator = e.target.value;
+		// after calculation, display resets and operator chose again
+		currentDisplay = 0;
+		chosenOperator = e.target.value;
+	} else {
+		if (e.key !== '=') return;
+		if (clickedOperateKeyAtFirstTime) return;
+
+		secondNumberForCalculation = +currentDisplay;
+		deleteOperatorIcon();
+		showEqualOperator('=');
+
+		// do calculation
+		operate(
+			chosenOperator,
+			firstNumberForCalculation,
+			secondNumberForCalculation
+		);
+
+		// after calculation, display resets and operator chose again
+		currentDisplay = 0;
+		chosenOperator = e.key;
+	}
 }
 
 function pushConvertKey() {
@@ -274,5 +335,8 @@ clearKey.addEventListener('click', resetAll);
 
 keys.forEach((key) => key.addEventListener('click', changeButtonColor));
 keys.forEach((key) => key.addEventListener('transitionend', removeTransition));
+
 document.addEventListener('keydown', changeButtonColor);
 document.addEventListener('keydown', pushNumberKey);
+document.addEventListener('keydown', pushOperateKey);
+document.addEventListener('keydown', pushEqualKey);

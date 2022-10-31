@@ -189,6 +189,10 @@ button {
 	transition: all 0.07s;
 }
 
+button:focus {
+	outline: none;
+} 
+
 .pushing {
 	transform: scale(1.05);
 	filter: brightness(1.25);
