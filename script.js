@@ -1,6 +1,4 @@
-// TODO: 3. When you click, button color is changed
 // TODO: 4. I have to set max number. Because numbers are poked out in display. (I think I have to change CSS)
-
 // FIXME: If you want to calculate with decimal number, error happens!! fix!!
 
 const numberKeys = document.querySelectorAll('.number');
@@ -63,18 +61,48 @@ function operate(operator, num1, num2) {
 }
 
 function pushNumberKey(e) {
-	if (currentDisplay === 0 && e.target.value === '0') return;
-	if (currentDisplay === 0 && e.target.value === '.')
-		currentDisplay += e.target.value;
-	if (currentDisplay.toString().includes('.') && e.target.value === '.') return;
-	if (currentDisplay === 0) {
-		currentDisplay = e.target.value;
-		display.value = currentDisplay;
-		return;
-	}
+	if (e.type === 'click') {
+		// if user click number's key, do something...
+		if (currentDisplay === 0 && e.target.value === '0') return;
+		if (currentDisplay === 0 && e.target.value === '.')
+			currentDisplay += e.target.value;
+		if (currentDisplay.toString().includes('.') && e.target.value === '.')
+			return;
+		if (currentDisplay === 0) {
+			currentDisplay = e.target.value;
+			display.value = currentDisplay;
+			return;
+		}
 
-	currentDisplay += e.target.value;
-	display.value = currentDisplay;
+		currentDisplay += e.target.value;
+		display.value = currentDisplay;
+	} else {
+		if (
+			e.key !== '0' &&
+			e.key !== '1' &&
+			e.key !== '2' &&
+			e.key !== '3' &&
+			e.key !== '4' &&
+			e.key !== '5' &&
+			e.key !== '6' &&
+			e.key !== '7' &&
+			e.key !== '8' &&
+			e.key !== '9' &&
+			e.key !== '.'
+		)
+			return;
+		if (currentDisplay === 0 && e.key === '0') return;
+		if (currentDisplay === 0 && e.key === '.') currentDisplay += e.key;
+		if (currentDisplay.toString().includes('.') && e.key === '.') return;
+		if (currentDisplay === 0) {
+			currentDisplay = e.key;
+			display.value = currentDisplay;
+			return;
+		}
+
+		currentDisplay += e.key;
+		display.value = currentDisplay;
+	}
 }
 
 function showOperatorIcon(chosenOperator) {
@@ -232,9 +260,10 @@ function changeButtonColor(e) {
 	key.classList.toggle('pushing');
 }
 
-numberKeys.forEach((numberKey) =>
-	numberKey.addEventListener('click', pushNumberKey)
-);
+numberKeys.forEach((numberKey) => {
+	numberKey.addEventListener('click', pushNumberKey);
+});
+
 operateKeys.forEach((operateKey) =>
 	operateKey.addEventListener('click', pushOperateKey)
 );
@@ -243,6 +272,7 @@ convertKey.addEventListener('click', pushConvertKey);
 equalKey.addEventListener('click', pushEqualKey);
 clearKey.addEventListener('click', resetAll);
 
-keys.forEach((key) => key.addEventListener('transitionend', removeTransition));
 keys.forEach((key) => key.addEventListener('click', changeButtonColor));
+keys.forEach((key) => key.addEventListener('transitionend', removeTransition));
 document.addEventListener('keydown', changeButtonColor);
+document.addEventListener('keydown', pushNumberKey);
