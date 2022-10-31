@@ -191,7 +191,7 @@ button {
 
 button:focus {
 	outline: none;
-} 
+}
 
 .pushing {
 	transform: scale(1.05);
@@ -209,4 +209,10 @@ button:focus {
 .zero-button {
 	grid-column-start: 1;
 	grid-column-end: 3;
+}
+
+.calculator-error {
+	position: absolute;
+	top: 2%;
+	left: 20%;
 }

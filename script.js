@@ -1,10 +1,9 @@
-// TODO: 4. I have to set max number. Because numbers are poked out in display. (I think I have to change CSS)
 // FIXME: If you want to calculate with decimal number, error happens!! fix!!
 // FIXME: After clicked equal sign and user want to calculate new value, error happens!! fix!!
 
 const numberKeys = document.querySelectorAll('.number');
 const operateKeys = document.querySelectorAll('.operate');
-const keys = document.querySelectorAll('.key');
+const allKeys = document.querySelectorAll('.key');
 
 const container = document.querySelector('.calculator');
 const display = document.querySelector('.calculator-screen');
@@ -14,6 +13,7 @@ const equalKey = document.querySelector('.equal');
 
 const operator = document.createElement('p');
 const equalOperator = document.createElement('p');
+const errorMessage = document.createElement('p');
 
 let currentDisplay = 0;
 let firstNumberForCalculation = 0;
@@ -38,22 +38,33 @@ function divide(num1, num2) {
 	return +num1 / +num2;
 }
 
+function addErrorMessage() {
+	errorMessage.classList.add('calculator-error');
+	errorMessage.textContent = 'E';
+	container.appendChild(errorMessage);
+	return;
+}
+
 function operate(operator, num1, num2) {
 	switch (operator) {
 		case '+':
 			firstNumberForCalculation = add(num1, num2);
+			currentDisplay.length >= 10 && addErrorMessage();
 			display.value = firstNumberForCalculation;
 			return;
 		case '-':
 			firstNumberForCalculation = subtract(num1, num2);
+			currentDisplay.length >= 10 && addErrorMessage();
 			display.value = firstNumberForCalculation;
 			return;
 		case '*':
 			firstNumberForCalculation = multiply(num1, num2);
+			currentDisplay.length >= 10 && addErrorMessage();
 			display.value = firstNumberForCalculation;
 			return;
 		case '/':
 			firstNumberForCalculation = divide(num1, num2);
+			currentDisplay.length >= 10 && addErrorMessage();
 			display.value = firstNumberForCalculation;
 			return;
 		default:
@@ -62,6 +73,13 @@ function operate(operator, num1, num2) {
 }
 
 function pushNumberKey(e) {
+	if (document.body.contains(errorMessage)) return;
+	if (currentDisplay.length >= 10) {
+		errorMessage.classList.add('calculator-error');
+		errorMessage.textContent = 'E';
+		container.appendChild(errorMessage);
+		return;
+	}
 	if (e.type === 'click') {
 		// When user click number's key...
 		if (currentDisplay === 0 && e.target.value === '0') return;
@@ -159,6 +177,7 @@ function pushPercentKey(e) {
 }
 
 function pushOperateKey(e) {
+	if (document.body.contains(errorMessage)) return;
 	if (e.type === 'click') {
 		if (clickedOperateKeyAtFirstTime && currentDisplay === 0) return;
 		if (clickedOperateKeyAtFirstTime) {
@@ -188,6 +207,7 @@ function pushOperateKey(e) {
 		chosenOperator = e.target.value;
 		showOperatorIcon(chosenOperator);
 	} else {
+		// When user push operate's key...
 		if (
 			e.key !== '%' &&
 			e.key !== '*' &&
@@ -227,6 +247,7 @@ function pushOperateKey(e) {
 }
 
 function pushEqualKey(e) {
+	if (document.body.contains(errorMessage)) return;
 	if (e.type === 'click') {
 		if (clickedOperateKeyAtFirstTime) return;
 
@@ -245,6 +266,7 @@ function pushEqualKey(e) {
 		currentDisplay = 0;
 		chosenOperator = e.target.value;
 	} else {
+		// When user push equal's key...
 		if (e.key !== '=') return;
 		if (clickedOperateKeyAtFirstTime) return;
 
@@ -266,6 +288,7 @@ function pushEqualKey(e) {
 }
 
 function pushConvertKey(e) {
+	if (document.body.contains(errorMessage)) return;
 	if (e.type === 'keydown' && e.key !== 'Tab') return;
 	if (currentDisplay === 0) return;
 
@@ -285,6 +308,11 @@ function pushConvertKey(e) {
 
 function resetAll(e) {
 	if (e.type === 'keydown' && e.key !== 'Backspace') return;
+
+	if (document.body.contains(errorMessage)) {
+		container.removeChild(errorMessage);
+	}
+
 	// operator resets
 	chosenOperator = '';
 	clickedOperateKeyAtFirstTime = true;
@@ -335,8 +363,10 @@ convertKey.addEventListener('click', pushConvertKey);
 equalKey.addEventListener('click', pushEqualKey);
 clearKey.addEventListener('click', resetAll);
 
-keys.forEach((key) => key.addEventListener('click', changeButtonColor));
-keys.forEach((key) => key.addEventListener('transitionend', removeTransition));
+allKeys.forEach((key) => key.addEventListener('click', changeButtonColor));
+allKeys.forEach((key) =>
+	key.addEventListener('transitionend', removeTransition)
+);
 
 document.addEventListener('keydown', changeButtonColor);
 document.addEventListener('keydown', pushNumberKey);
