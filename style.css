@@ -181,12 +181,17 @@ table {
 }
 
 button {
-	height: 60px;
-	border-radius: 5px;
+	border-radius: 3px;
 	border: 1px solid #c4c4c4;
 	font-size: 2rem;
 	background-color: #217c7e;
 	cursor: pointer;
+	transition: all 0.07s;
+}
+
+.pushing {
+	transform: scale(1.05);
+	filter: brightness(1.25);
 }
 
 .blue-button {
@@ -200,9 +205,4 @@ button {
 .zero-button {
 	grid-column-start: 1;
 	grid-column-end: 3;
-}
-
-.pushed-operate {
-	background-color: #ffc083;
-	transition: all 0.1s ease;
 }
