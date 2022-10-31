@@ -12,25 +12,43 @@
 			<input class="calculator-screen" type="text" disabled value="0" />
 
 			<div class="calculator-keys">
-				<button value="ac" class="clear blue-button">AC</button>
-				<button value="+-" class="convert blue-button">+/-</button>
-				<button value="%" class="operate blue-button">%</button>
-				<button value="/" class="operate orange-button">/</button>
-				<button value="7" class="number">7</button>
-				<button value="8" class="number">8</button>
-				<button value="9" class="number">9</button>
-				<button value="*" class="operate orange-button">*</button>
-				<button value="4" class="number">4</button>
-				<button value="5" class="number">5</button>
-				<button value="6" class="number">6</button>
-				<button value="-" class="operate orange-button">-</button>
-				<button value="1" class="number">1</button>
-				<button value="2" class="number">2</button>
-				<button value="3" class="number">3</button>
-				<button value="+" class="operate orange-button">+</button>
-				<button value="0" class="number zero-button">0</button>
-				<button value="." class="number">.</button>
-				<button value="=" class="equal orange-button">=</button>
+				<button value="ac" class="clear blue-button" id="key" data-key="127">
+					AC
+				</button>
+				<button value="+-" class="convert blue-button" id="key" data-key="32">
+					+/-
+				</button>
+				<button value="%" class="operate blue-button" id="key" data-key="37">
+					%
+				</button>
+				<button value="/" class="operate orange-button" id="key" data-key="47">
+					/
+				</button>
+				<button value="7" class="number" id="key" data-key="55">7</button>
+				<button value="8" class="number" id="key" data-key="56">8</button>
+				<button value="9" class="number" id="key" data-key="57">9</button>
+				<button value="*" class="operate orange-button" id="key" data-key="42">
+					*
+				</button>
+				<button value="4" class="number" id="key" data-key="52">4</button>
+				<button value="5" class="number" id="key" data-key="53">5</button>
+				<button value="6" class="number" id="key" data-key="54">6</button>
+				<button value="-" class="operate orange-button" id="key" data-key="45">
+					-
+				</button>
+				<button value="1" class="number" id="key" data-key="49">1</button>
+				<button value="2" class="number" id="key" data-key="50">2</button>
+				<button value="3" class="number" id="key" data-key="51">3</button>
+				<button value="+" class="operate orange-button" id="key" data-key="43">
+					+
+				</button>
+				<button value="0" class="number zero-button" id="key" data-key="48">
+					0
+				</button>
+				<button value="." class="number" id="key" data-key="46">.</button>
+				<button value="=" class="equal orange-button" id="key" data-key="61">
+					=
+				</button>
 			</div>
 		</div>
 		<script src="script.js"></script>

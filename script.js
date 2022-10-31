@@ -196,6 +196,8 @@ function resetAll() {
 	// operator resets
 	chosenOperator = '';
 	clickedOperateKeyAtFirstTime = true;
+
+	// showed icon resets
 	deleteOperatorIcon();
 	deleteEqualIcon();
 
