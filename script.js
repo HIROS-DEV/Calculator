@@ -265,7 +265,8 @@ function pushEqualKey(e) {
 	}
 }
 
-function pushConvertKey() {
+function pushConvertKey(e) {
+	if (e.type === 'keydown' && e.key !== 'Shift') return;
 	if (currentDisplay === 0) return;
 
 	// convert from minus to plus
@@ -340,3 +341,4 @@ document.addEventListener('keydown', changeButtonColor);
 document.addEventListener('keydown', pushNumberKey);
 document.addEventListener('keydown', pushOperateKey);
 document.addEventListener('keydown', pushEqualKey);
+document.addEventListener('keydown', pushConvertKey);
