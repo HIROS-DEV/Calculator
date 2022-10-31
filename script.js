@@ -217,7 +217,17 @@ function removeTransition(e) {
 }
 
 function changeButtonColor(e) {
-	const key = document.querySelector(`.key[data-key="${e.key}"]`);
+	let key;
+
+	if (e.type === 'click') {
+		// if user click keys, button's color change.
+		key = document.querySelector(
+			`.key[data-key="${e.currentTarget.dataset.key}"]`
+		);
+	} else {
+		// if user push keys, button's color change.
+		key = document.querySelector(`.key[data-key="${e.key}"]`);
+	}
 	if (!key) return;
 	key.classList.toggle('pushing');
 }
@@ -234,4 +244,5 @@ equalKey.addEventListener('click', pushEqualKey);
 clearKey.addEventListener('click', resetAll);
 
 keys.forEach((key) => key.addEventListener('transitionend', removeTransition));
+keys.forEach((key) => key.addEventListener('click', changeButtonColor));
 document.addEventListener('keydown', changeButtonColor);
