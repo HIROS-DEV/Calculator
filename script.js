@@ -5,6 +5,7 @@
 
 const numberKeys = document.querySelectorAll('.number');
 const operateKeys = document.querySelectorAll('.operate');
+const keys = document.querySelectorAll('.key');
 
 const container = document.querySelector('.calculator');
 const display = document.querySelector('.calculator-screen');
@@ -210,12 +211,27 @@ function resetAll() {
 	display.value = currentDisplay;
 }
 
+function removeTransition(e) {
+	if (e.propertyName !== 'transform') return;
+	this.classList.remove('pushing');
+}
+
+function changeButtonColor(e) {
+	const key = document.querySelector(`.key[data-key="${e.key}"]`);
+	if (!key) return;
+	key.classList.toggle('pushing');
+}
+
 numberKeys.forEach((numberKey) =>
 	numberKey.addEventListener('click', pushNumberKey)
 );
 operateKeys.forEach((operateKey) =>
 	operateKey.addEventListener('click', pushOperateKey)
 );
+
 convertKey.addEventListener('click', pushConvertKey);
 equalKey.addEventListener('click', pushEqualKey);
 clearKey.addEventListener('click', resetAll);
+
+keys.forEach((key) => key.addEventListener('transitionend', removeTransition));
+document.addEventListener('keydown', changeButtonColor);
