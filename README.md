@@ -11,7 +11,15 @@ In this lesson, I had to create a Calculator using HTML / CSS /JavaScript.
 Web Page: https://hiros-dev.github.io/Calculator/
 
 # Key's Actions
-You can use mouse or keyboard in the Calculator
+
+You can use both mouse and keyboard in the Calculator.
+
+"0 1 2 3 4 5 6 7 8 9 ." - numbers key
+"+ - * / %" - operate key
+"=" - equal key
+"d" - AC function (All Clear)
+"BackSpace" - Delete one number on display
+"Tab" - convert number on display from plus to minus (or from minus to plus)
 
 # Screen Shot
 
@@ -22,7 +30,7 @@ You can use mouse or keyboard in the Calculator
 I had to combine everything I have learned so for to create Calculator.
 So, I got a HTML / CSS / JavaScript knowledge more than before.
 
-I think Calculator project is simple. 
+I think Calculator project is simple.
 But it is not easy.
 (Especially, programmer want to create perfect calculator)
 
