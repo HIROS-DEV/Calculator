@@ -1,6 +1,6 @@
 # Project: Calculator OverView
 
-This is the Javascript foundations course in the Odin Project(URL:https://www.theodinproject.com/lessons/foundations-calculator).
+This is the Javascript foundation's course in the Odin Project(URL:https://www.theodinproject.com/lessons/foundations-calculator).
 
 (The Odin Project is the free course to become a fullstack web developer)
 
@@ -41,6 +41,15 @@ So, the project is very effective showcase to prove programmers skills.
 
 Please check my written code and project demo.
 I think my code proves my programming skill more than anything.
+
+# About Float Calculation
+
+My calculator uses parseFloat and toPrecision(2) methods.
+So, if you try calculation (ex. 1 divided by 3), the answer is 0.33.
+
+Perhaps, this is not desirable behavior for you.
+This case, you can change toPrecision methods with  more big number.
+Or, you can use libraries(ex. bignumber.js (URL:https://github.com/MikeMcl/bignumber.js/))
 
 # Summary
 
