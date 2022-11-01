@@ -42,64 +42,46 @@ function addErrorMessage() {
 	return;
 }
 
+// In JavaScript world, programmer have to convert from number to float, if programmer would like to use float number.
 function convertFromNumberToFloat(number) {
-	return parseFloat(number).toPrecision(2);
+	return (
+		number.toString().includes('.') &&
+		(firstNumberForCalculation = parseFloat(number).toPrecision(2))
+	);
 }
 
 function operate(operator, num1, num2) {
 	switch (operator) {
 		case '+':
+			// set first number value for calculation
 			firstNumberForCalculation = add(num1, num2);
 
-			// if user would like to calculate float number, number type has to convert float in Javascript world...
-			if (firstNumberForCalculation.toString().includes('.')) {
-				firstNumberForCalculation = convertFromNumberToFloat(
-					firstNumberForCalculation
-				);
-			}
+			// convert from number to float if user input float value
+			convertFromNumberToFloat(firstNumberForCalculation);
 
+			// if current display's value exceeds 10 length, "E" message appears in display
 			currentDisplay.length >= 10 && addErrorMessage();
-			display.value = firstNumberForCalculation;
 
+			// after calculation, new value appears in display
+			display.value = firstNumberForCalculation;
 			return;
 		case '-':
 			firstNumberForCalculation = subtract(num1, num2);
-
-			if (firstNumberForCalculation.toString().includes('.')) {
-				firstNumberForCalculation = convertFromNumberToFloat(
-					firstNumberForCalculation
-				);
-			}
-
+			convertFromNumberToFloat(firstNumberForCalculation);
 			currentDisplay.length >= 10 && addErrorMessage();
 			display.value = firstNumberForCalculation;
-
 			return;
 		case '*':
 			firstNumberForCalculation = multiply(num1, num2);
-
-			if (firstNumberForCalculation.toString().includes('.')) {
-				firstNumberForCalculation = convertFromNumberToFloat(
-					firstNumberForCalculation
-				);
-			}
-
+			convertFromNumberToFloat(firstNumberForCalculation);
 			currentDisplay.length >= 10 && addErrorMessage();
 			display.value = firstNumberForCalculation;
-
 			return;
 		case '/':
 			firstNumberForCalculation = divide(num1, num2);
-
-			if (firstNumberForCalculation.toString().includes('.')) {
-				firstNumberForCalculation = convertFromNumberToFloat(
-					firstNumberForCalculation
-				);
-			}
-
+			convertFromNumberToFloat(firstNumberForCalculation);
 			currentDisplay.length >= 10 && addErrorMessage();
 			display.value = firstNumberForCalculation;
-
 			return;
 		default:
 			break;
@@ -107,6 +89,7 @@ function operate(operator, num1, num2) {
 }
 
 function pushNumberKey(e) {
+	// After calculation, if user want to calculate again with new values, the code works...
 	if (e.type === 'click' && document.body.contains(equalOperator)) {
 		resetAll(e);
 	}
@@ -154,7 +137,7 @@ function pushNumberKey(e) {
 		if (e.type === 'keydown' && document.body.contains(equalOperator)) {
 			if (e.key === '+' || e.key === '-' || e.key === '/' || e.key === '*')
 				return;
-			
+
 			// operator resets
 			chosenOperator = '';
 			clickedOperateKeyAtFirstTime = true;
@@ -368,7 +351,7 @@ function pushConvertKey(e) {
 }
 
 function resetAll(e) {
-	if (e.type === 'keydown' && e.key !== 'Backspace') return;
+	if (e.type === 'keydown' && e.key !== 'd') return;
 
 	if (document.body.contains(errorMessage)) {
 		container.removeChild(errorMessage);
@@ -412,6 +395,21 @@ function changeButtonColor(e) {
 	key.classList.toggle('pushing');
 }
 
+function removeLastNumberFromDisplay(e) {
+	if (e.key === 'Backspace') {
+		const newDisplayValueAfterRemoveLastNumber = currentDisplay
+			.toString()
+			.substring(0, currentDisplay.length - 1);
+
+		currentDisplay =
+			newDisplayValueAfterRemoveLastNumber.length === 0
+				? 0
+				: newDisplayValueAfterRemoveLastNumber;
+
+		display.value = currentDisplay;
+	}
+}
+
 numberKeys.forEach((numberKey) => {
 	numberKey.addEventListener('click', pushNumberKey);
 });
@@ -435,3 +433,4 @@ document.addEventListener('keydown', pushOperateKey);
 document.addEventListener('keydown', pushEqualKey);
 document.addEventListener('keydown', pushConvertKey);
 document.addEventListener('keydown', resetAll);
+document.addEventListener('keydown', removeLastNumberFromDisplay);
