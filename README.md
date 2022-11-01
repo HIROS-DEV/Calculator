@@ -8,13 +8,14 @@ In this lesson, I had to create a Calculator using HTML / CSS /JavaScript.
 
 # Web URL
 
-<!-- Web Page: https://hiros-dev.github.io/Etch-A-Sketch/ -->
+Web Page: https://hiros-dev.github.io/Calculator/
 
-# Key Actions
+# Key's Actions
+You can use mouse or keyboard in the Calculator
 
 # Screen Shot
 
-<!-- <img src="./screen.png"/> -->
+<img src="./screen.png"/>
 
 # What did I learn through this course
 
