@@ -107,7 +107,9 @@ function operate(operator, num1, num2) {
 }
 
 function pushNumberKey(e) {
-	document.body.contains(equalOperator) && resetAll(e);
+	if (e.type === 'click' && document.body.contains(equalOperator)) {
+		resetAll(e);
+	}
 
 	if (document.body.contains(errorMessage)) return;
 
@@ -149,7 +151,26 @@ function pushNumberKey(e) {
 			e.key !== '.'
 		)
 			return;
+		if (e.type === 'keydown' && document.body.contains(equalOperator)) {
+			if (e.key === '+' || e.key === '-' || e.key === '/' || e.key === '*')
+				return;
+			
+			// operator resets
+			chosenOperator = '';
+			clickedOperateKeyAtFirstTime = true;
 
+			// values resets
+			firstNumberForCalculation = 0;
+			secondNumberForCalculation = 0;
+
+			// showed icon resets
+			deleteOperatorIcon();
+			deleteEqualIcon();
+
+			// display resets
+			currentDisplay = 0;
+			display.value = currentDisplay;
+		}
 		if (currentDisplay === 0 && e.key === '0') return;
 		if (currentDisplay === 0 && e.key === '.') currentDisplay += e.key;
 		if (currentDisplay.toString().includes('.') && e.key === '.') return;
@@ -307,8 +328,8 @@ function pushEqualKey(e) {
 		chosenOperator = e.target.value;
 	} else {
 		// When user push equal's key...
-		if (e.key !== '=') return;
 		if (clickedOperateKeyAtFirstTime) return;
+		if (e.key !== '=') return;
 
 		secondNumberForCalculation = +currentDisplay;
 		deleteOperatorIcon();
@@ -357,13 +378,13 @@ function resetAll(e) {
 	chosenOperator = '';
 	clickedOperateKeyAtFirstTime = true;
 
-	// showed icon resets
-	deleteOperatorIcon();
-	deleteEqualIcon();
-
 	// values resets
 	firstNumberForCalculation = 0;
 	secondNumberForCalculation = 0;
+
+	// showed icon resets
+	deleteOperatorIcon();
+	deleteEqualIcon();
 
 	// display resets
 	currentDisplay = 0;
