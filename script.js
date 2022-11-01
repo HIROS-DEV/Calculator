@@ -1,6 +1,3 @@
-// FIXME: If you want to calculate with decimal number, error happens!! fix!!
-// FIXME: After clicked equal sign and user want to calculate new value, error happens!! fix!!
-
 const numberKeys = document.querySelectorAll('.number');
 const operateKeys = document.querySelectorAll('.operate');
 const allKeys = document.querySelectorAll('.key');
@@ -45,27 +42,64 @@ function addErrorMessage() {
 	return;
 }
 
+function convertFromNumberToFloat(number) {
+	return parseFloat(number).toPrecision(2);
+}
+
 function operate(operator, num1, num2) {
 	switch (operator) {
 		case '+':
 			firstNumberForCalculation = add(num1, num2);
+
+			// if user would like to calculate float number, number type has to convert float in Javascript world...
+			if (firstNumberForCalculation.toString().includes('.')) {
+				firstNumberForCalculation = convertFromNumberToFloat(
+					firstNumberForCalculation
+				);
+			}
+
 			currentDisplay.length >= 10 && addErrorMessage();
 			display.value = firstNumberForCalculation;
+
 			return;
 		case '-':
 			firstNumberForCalculation = subtract(num1, num2);
+
+			if (firstNumberForCalculation.toString().includes('.')) {
+				firstNumberForCalculation = convertFromNumberToFloat(
+					firstNumberForCalculation
+				);
+			}
+
 			currentDisplay.length >= 10 && addErrorMessage();
 			display.value = firstNumberForCalculation;
+
 			return;
 		case '*':
 			firstNumberForCalculation = multiply(num1, num2);
+
+			if (firstNumberForCalculation.toString().includes('.')) {
+				firstNumberForCalculation = convertFromNumberToFloat(
+					firstNumberForCalculation
+				);
+			}
+
 			currentDisplay.length >= 10 && addErrorMessage();
 			display.value = firstNumberForCalculation;
+
 			return;
 		case '/':
 			firstNumberForCalculation = divide(num1, num2);
+
+			if (firstNumberForCalculation.toString().includes('.')) {
+				firstNumberForCalculation = convertFromNumberToFloat(
+					firstNumberForCalculation
+				);
+			}
+
 			currentDisplay.length >= 10 && addErrorMessage();
 			display.value = firstNumberForCalculation;
+
 			return;
 		default:
 			break;
@@ -73,13 +107,17 @@ function operate(operator, num1, num2) {
 }
 
 function pushNumberKey(e) {
+	document.body.contains(equalOperator) && resetAll(e);
+
 	if (document.body.contains(errorMessage)) return;
+
 	if (currentDisplay.length >= 10) {
 		errorMessage.classList.add('calculator-error');
 		errorMessage.textContent = 'E';
 		container.appendChild(errorMessage);
 		return;
 	}
+
 	if (e.type === 'click') {
 		// When user click number's key...
 		if (currentDisplay === 0 && e.target.value === '0') return;
@@ -111,6 +149,7 @@ function pushNumberKey(e) {
 			e.key !== '.'
 		)
 			return;
+
 		if (currentDisplay === 0 && e.key === '0') return;
 		if (currentDisplay === 0 && e.key === '.') currentDisplay += e.key;
 		if (currentDisplay.toString().includes('.') && e.key === '.') return;
@@ -160,6 +199,7 @@ function deleteEqualIcon() {
 }
 
 function pushPercentKey(e) {
+	if (document.body.contains(errorMessage)) return;
 	if (
 		e.target.value === '%' &&
 		(chosenOperator === '+' || chosenOperator === '-')
